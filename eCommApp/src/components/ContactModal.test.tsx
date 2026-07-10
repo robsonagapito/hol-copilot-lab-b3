@@ -59,7 +59,7 @@ describe('ContactModal', () => {
         const onClose = vi.fn();
         render(<ContactModal onClose={onClose} />);
 
-        fireEvent.click(screen.getByRole('button', { name: '✕' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Fechar modal' }));
         expect(onClose).toHaveBeenCalledOnce();
     });
 });

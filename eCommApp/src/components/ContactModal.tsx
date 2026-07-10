@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ContactModalProps {
     onClose: () => void;
@@ -10,6 +10,14 @@ const ContactModal = ({ onClose }: ContactModalProps) => {
     const [request, setRequest] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitted(true);
@@ -19,7 +27,7 @@ const ContactModal = ({ onClose }: ContactModalProps) => {
     };
 
     return (
-        <div className="modal-backdrop">
+        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Fale Conosco">
             <div className="modal-content">
                 {submitted ? (
                     <div className="contact-confirmation">
@@ -52,7 +60,7 @@ const ContactModal = ({ onClose }: ContactModalProps) => {
                             />
                             <button type="submit">Enviar</button>
                         </form>
-                        <button onClick={onClose} className="close-button">✕</button>
+                        <button onClick={onClose} className="close-button" aria-label="Fechar modal">✕</button>
                     </>
                 )}
             </div>
